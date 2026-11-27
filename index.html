@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>めじるしチャーム ガチャシミュレーター</title>
   <style>
     :root {
@@ -16,7 +16,7 @@
       --border: #e2e8f0;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
@@ -28,29 +28,29 @@
     .container {
       max-width: 640px;
       margin: 0 auto;
-      padding: 20px 16px 60px;
+      padding: 18px 14px 64px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     header h1 {
-      font-size: 1.5rem;
-      margin: 0 0 6px;
+      font-size: 1.4rem;
+      margin: 0 0 4px;
     }
     header p {
       margin: 0;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       color: var(--muted);
     }
 
     .card {
       background: var(--card);
       border-radius: 16px;
-      padding: 18px;
+      padding: 16px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       border: 1px solid var(--border);
     }
 
@@ -62,27 +62,27 @@
     }
     .machine-title {
       font-weight: bold;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--primary-dark);
       margin-bottom: 12px;
     }
 
     .btn-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
     }
     button {
       border: none;
       border-radius: 999px;
-      padding: 12px 22px;
-      font-size: 1rem;
+      padding: 13px 12px;
+      font-size: 0.95rem;
       font-weight: bold;
       cursor: pointer;
       transition: transform 0.1s, opacity 0.2s;
     }
     button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-1 {
       background: var(--primary);
       color: #fff;
@@ -91,13 +91,13 @@
     .btn-5 {
       background: var(--secondary);
       color: #fff;
-      box-shadow: 0 4px 0 #2b8a3e00, 0 4px 0 #228be6;
+      box-shadow: 0 4px 0 #228be6;
     }
     .btn-sub {
       background: #edf2f7;
       color: var(--text);
-      font-size: 0.85rem;
-      padding: 8px 14px;
+      font-size: 0.8rem;
+      padding: 7px 12px;
     }
 
     /* 排出結果エリア */
@@ -109,31 +109,32 @@
       gap: 8px;
     }
     .result-header h2 {
-      font-size: 1.05rem;
+      font-size: 1rem;
       margin: 0;
     }
     .shared-badge {
       display: none;
       background: #fff3bf;
       color: #e67700;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: bold;
-      padding: 3px 10px;
+      padding: 2px 8px;
       border-radius: 999px;
+      margin-left: 4px;
     }
 
     .result-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
-      gap: 10px;
-      min-height: 110px;
+      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      gap: 8px;
+      min-height: 106px;
       align-items: center;
     }
     .empty-msg {
       grid-column: 1 / -1;
       text-align: center;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       padding: 20px 0;
     }
 
@@ -142,9 +143,9 @@
       background: #fafbff;
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 10px 6px;
+      padding: 10px 4px;
       text-align: center;
-      animation: popIn 0.28s ease-out;
+      animation: popIn 0.3s ease-out;
       position: relative;
     }
     @keyframes popIn {
@@ -153,24 +154,24 @@
     }
     .new-tag {
       position: absolute;
-      top: 6px;
-      left: 6px;
+      top: 5px;
+      left: 5px;
       background: #ff6b8b;
       color: #fff;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: bold;
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 6px;
     }
     .dup-tag {
       position: absolute;
-      top: 6px;
-      right: 6px;
+      top: 5px;
+      right: 5px;
       background: #e9ecef;
       color: #495057;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: bold;
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 6px;
     }
 
@@ -178,12 +179,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 8px 0 6px;
+      margin: 6px 0 4px;
     }
-    /* シリコンリング風 */
     .silicon-ring {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       border: 4px solid rgba(130, 190, 255, 0.55);
       box-shadow: inset 0 1px 2px rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.1);
@@ -191,17 +191,17 @@
       z-index: 1;
     }
     .charm-body {
-      width: 54px;
-      height: 54px;
+      width: 52px;
+      height: 52px;
       border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 1.9rem;
       box-shadow: 0 3px 6px rgba(0,0,0,0.08);
     }
     .charm-name {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: bold;
       margin-top: 4px;
     }
@@ -212,7 +212,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .stat-box {
       background: #f8f9fa;
@@ -220,23 +220,23 @@
       padding: 8px 4px;
     }
     .stat-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
     }
     .stat-val {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: bold;
     }
 
     .dex-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 8px;
     }
     .dex-item {
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 10px 6px;
+      padding: 8px 4px;
       text-align: center;
       background: #fff;
       transition: 0.2s;
@@ -249,15 +249,180 @@
     .dex-count {
       display: inline-block;
       margin-top: 4px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: bold;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 999px;
       background: #edf2f7;
     }
     .dex-count.has-dup {
       background: #ffe3e3;
       color: #c92a2a;
+    }
+
+    /* ▼ カプセル開封アニメーション用オーバーレイ ▼ */
+    .capsule-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(25, 28, 45, 0.78);
+      backdrop-filter: blur(4px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+      user-select: none;
+    }
+    .capsule-overlay.active {
+      display: flex;
+    }
+
+    .stage-counter {
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: bold;
+      background: rgba(255,255,255,0.16);
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+
+    .capsule-stage {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 光のフラッシュ */
+    .burst-glow {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,230,128,0.5) 45%, rgba(255,255,255,0) 72%);
+      transform: scale(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .capsule-stage.opened .burst-glow {
+      animation: burstFlash 0.55s ease-out forwards;
+    }
+    @keyframes burstFlash {
+      0% { transform: scale(0.2); opacity: 1; }
+      60% { transform: scale(1.45); opacity: 0.9; }
+      100% { transform: scale(1.7); opacity: 0; }
+    }
+
+    /* カプセル本体 */
+    .capsule-wrapper {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      z-index: 3;
+    }
+    /* 転がり登場 → 震える */
+    .capsule-stage.rolling .capsule-wrapper {
+      animation: capsuleRollIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .capsule-stage.shaking .capsule-wrapper {
+      animation: capsuleShake 0.45s ease-in-out infinite;
+    }
+    @keyframes capsuleRollIn {
+      0% { transform: translateX(-180px) rotate(-360deg) scale(0.5); opacity: 0; }
+      70% { transform: translateX(10px) rotate(18deg) scale(1.03); opacity: 1; }
+      100% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+    }
+    @keyframes capsuleShake {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      20% { transform: rotate(-10deg) scale(1.04); }
+      40% { transform: rotate(10deg) scale(1.04); }
+      60% { transform: rotate(-8deg) scale(1.02); }
+      80% { transform: rotate(8deg) scale(1.02); }
+    }
+
+    /* 上半分（透明ドーム風） */
+    .cap-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 130px;
+      height: 65px;
+      border-radius: 65px 65px 6px 6px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.45) 100%);
+      border: 3px solid rgba(255,255,255,0.9);
+      box-shadow: inset 0 6px 12px rgba(255,255,255,0.8);
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+    }
+    /* 下半分（色付きカプセル） */
+    .cap-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 130px;
+      height: 65px;
+      border-radius: 6px 6px 65px 65px;
+      background: var(--cap-color, #ff6b8b);
+      border: 3px solid rgba(255,255,255,0.75);
+      box-shadow: inset 0 -8px 14px rgba(0,0,0,0.16);
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+    }
+
+    /* パカッと開く動き */
+    .capsule-stage.opened .cap-top {
+      transform: translate(-28px, -62px) rotate(-28deg);
+      opacity: 0;
+    }
+    .capsule-stage.opened .cap-bottom {
+      transform: translate(24px, 58px) rotate(22deg);
+      opacity: 0;
+    }
+
+    /* 中から飛び出すチャーム */
+    .reveal-charm {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.2);
+      opacity: 0;
+      transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+    }
+    .capsule-stage.opened .reveal-charm {
+      transform: scale(1.25);
+      opacity: 1;
+    }
+    .reveal-label {
+      margin-top: 22px;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: 0.3s ease;
+    }
+    .reveal-label.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-new {
+      display: inline-block;
+      background: #ff6b8b;
+      color: #fff;
+      font-size: 0.78rem;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+    }
+    .skip-hint {
+      margin-top: 28px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.82rem;
     }
 
     .toast {
@@ -273,7 +438,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s;
-      z-index: 99;
+      z-index: 300;
     }
     .toast.show { opacity: 1; }
   </style>
@@ -289,15 +454,15 @@
     <div class="card machine-box">
       <div class="machine-title">シリコンリング付き！どれが出るかな？</div>
       <div class="btn-row">
-        <button class="btn-1" onclick="spinGacha(1)">1回まわす (¥300)</button>
-        <button class="btn-5" onclick="spinGacha(5)">5連まわす (¥1,500)</button>
+        <button id="btn1" class="btn-1" onclick="spinGacha(1)">1回まわす (¥300)</button>
+        <button id="btn5" class="btn-5" onclick="spinGacha(5)">5連まわす (¥1,500)</button>
       </div>
     </div>
 
     <!-- 排出結果エリア -->
     <div class="card">
       <div class="result-header">
-        <h2>今回の結果 <span id="sharedBadge" class="shared-badge">共有された結果を表示中</span></h2>
+        <h2>今回の結果 <span id="sharedBadge" class="shared-badge">共有表示</span></h2>
         <button class="btn-sub" onclick="shareResult()">🔗 結果をURL共有</button>
       </div>
       <div id="resultGrid" class="result-grid">
@@ -331,30 +496,46 @@
     </div>
   </div>
 
+  <!-- カプセル開封アニメーション画面 -->
+  <div id="capsuleOverlay" class="capsule-overlay" onclick="skipAnimation()">
+    <div id="stageCounter" class="stage-counter">1 / 1</div>
+    <div id="capsuleStage" class="capsule-stage">
+      <div class="burst-glow"></div>
+      <div id="revealCharm" class="reveal-charm"></div>
+      <div class="capsule-wrapper">
+        <div class="cap-top"></div>
+        <div id="capBottom" class="cap-bottom"></div>
+      </div>
+    </div>
+    <div id="revealLabel" class="reveal-label"></div>
+    <div class="skip-hint">画面タップでスキップ</div>
+  </div>
+
   <div id="toast" class="toast">共有URLをコピーしました！</div>
 
   <script>
-    // ▼ ラインナップ設定（ここを書き換えるだけでオリジナルガチャになります）
+    // ▼ ラインナップ設定（capColor はカプセルの色です）
     const ITEMS = [
-      { id: 0, name: "しろくま", emoji: "🐻‍❄️", color: "#e3fafc", ring: "rgba(116, 192, 252, 0.6)", weight: 1 },
-      { id: 1, name: "プリン",   emoji: "🍮",   color: "#fff9db", ring: "rgba(255, 212, 59, 0.6)",  weight: 1 },
-      { id: 2, name: "めんだこ", emoji: "🐙",   color: "#ffe3e3", ring: "rgba(255, 135, 135, 0.6)", weight: 1 },
-      { id: 3, name: "メロンソーダ", emoji: "🥤", color: "#d3f9d8", ring: "rgba(105, 219, 124, 0.6)", weight: 1 },
-      { id: 4, name: "おにぎり", emoji: "🍙",   color: "#f1f3f5", ring: "rgba(173, 181, 189, 0.6)", weight: 1 },
-      { id: 5, name: "シークレット猫", emoji: "🐈‍⬛", color: "#f3d9fa", ring: "rgba(218, 119, 242, 0.6)", weight: 1 }
+      { id: 0, name: "しろくま",       emoji: "🐻‍❄️", color: "#e3fafc", ring: "rgba(116, 192, 252, 0.65)", capColor: "#74c0fc", weight: 1 },
+      { id: 1, name: "プリン",         emoji: "🍮",   color: "#fff9db", ring: "rgba(255, 212, 59, 0.65)",  capColor: "#ffd43b", weight: 1 },
+      { id: 2, name: "めんだこ",       emoji: "🐙",   color: "#ffe3e3", ring: "rgba(255, 135, 135, 0.65)", capColor: "#ff8787", weight: 1 },
+      { id: 3, name: "メロンソーダ",   emoji: "🥤",   color: "#d3f9d8", ring: "rgba(105, 219, 124, 0.65)", capColor: "#69db7c", weight: 1 },
+      { id: 4, name: "おにぎり",       emoji: "🍙",   color: "#f1f3f5", ring: "rgba(173, 181, 189, 0.65)", capColor: "#adb5bd", weight: 1 },
+      { id: 5, name: "シークレット猫", emoji: "🐈‍⬛", color: "#f3d9fa", ring: "rgba(218, 119, 242, 0.65)", capColor: "#da77f2", weight: 1 }
     ];
 
     const PRICE_PER_SPIN = 300;
     const STORAGE_KEY = "mejirushi_gacha_save_v1";
 
-    // 所持状況データ
     let state = {
       counts: Array(ITEMS.length).fill(0),
       totalSpins: 0,
       lastResults: []
     };
 
-    // 重み付きランダム抽選
+    let animTimers = [];
+    let pendingRender = null;
+
     function drawOne() {
       const totalWeight = ITEMS.reduce((sum, item) => sum + item.weight, 0);
       let r = Math.random() * totalWeight;
@@ -365,7 +546,6 @@
       return 0;
     }
 
-    // ガチャ実行
     function spinGacha(times) {
       document.getElementById("sharedBadge").style.display = "none";
       const results = [];
@@ -383,11 +563,98 @@
       state.lastResults = results;
       saveState();
       updateUrlParam(results);
-      renderResults(results, newFlags);
-      renderDex();
+
+      pendingRender = { results, newFlags };
+      playCapsuleSequence(results, newFlags);
     }
 
-    // 結果描画
+    // カプセル開封の連続演出
+    function playCapsuleSequence(results, newFlags) {
+      clearAnimTimers();
+      const overlay = document.getElementById("capsuleOverlay");
+      overlay.classList.add("active");
+
+      let index = 0;
+
+      function showNextCapsule() {
+        if (index >= results.length) {
+          finishAnimation();
+          return;
+        }
+
+        const item = ITEMS[results[index]];
+        const isNew = newFlags[index];
+
+        const counter = document.getElementById("stageCounter");
+        const stage = document.getElementById("capsuleStage");
+        const capBottom = document.getElementById("capBottom");
+        const revealCharm = document.getElementById("revealCharm");
+        const revealLabel = document.getElementById("revealLabel");
+
+        counter.textContent = `${index + 1} / ${results.length}`;
+        capBottom.style.setProperty("--cap-color", item.capColor);
+
+        // 中身の準備
+        revealCharm.innerHTML = `
+          <div class="silicon-ring" style="width:32px;height:32px;border-width:5px;border-color:${item.ring}"></div>
+          <div class="charm-body" style="width:74px;height:74px;font-size:2.7rem;background:${item.color}">${item.emoji}</div>
+        `;
+        revealLabel.className = "reveal-label";
+        revealLabel.innerHTML = `
+          ${isNew ? `<div><span class="reveal-new">NEW!</span></div>` : ""}
+          <div>${item.name}</div>
+        `;
+
+        // クラスリセットして転がり開始
+        stage.className = "capsule-stage";
+        void stage.offsetWidth; // リフロー強制
+        stage.classList.add("rolling");
+
+        // 0.55秒後：ガタガタ震える
+        const t1 = setTimeout(() => {
+          stage.classList.remove("rolling");
+          stage.classList.add("shaking");
+        }, 550);
+
+        // 1.05秒後：パカッと開く！
+        const t2 = setTimeout(() => {
+          stage.classList.remove("shaking");
+          stage.classList.add("opened");
+          revealLabel.classList.add("show");
+        }, 1050);
+
+        // 2.05秒後：次のカプセルへ（単発なら少し長めに見せる）
+        const nextDelay = results.length === 1 ? 2250 : 1850;
+        const t3 = setTimeout(() => {
+          index++;
+          showNextCapsule();
+        }, nextDelay);
+
+        animTimers.push(t1, t2, t3);
+      }
+
+      showNextCapsule();
+    }
+
+    function clearAnimTimers() {
+      animTimers.forEach(id => clearTimeout(id));
+      animTimers = [];
+    }
+
+    function skipAnimation() {
+      finishAnimation();
+    }
+
+    function finishAnimation() {
+      clearAnimTimers();
+      document.getElementById("capsuleOverlay").classList.remove("active");
+      if (pendingRender) {
+        renderResults(pendingRender.results, pendingRender.newFlags);
+        renderDex();
+        pendingRender = null;
+      }
+    }
+
     function renderResults(resultIds, newFlags = []) {
       const grid = document.getElementById("resultGrid");
       if (!resultIds || resultIds.length === 0) {
@@ -413,7 +680,6 @@
       }).join("");
     }
 
-    // 図鑑＆ダブりカウント描画
     function renderDex() {
       const ownedTypes = state.counts.filter(c => c > 0).length;
       document.getElementById("totalSpins").textContent = `${state.totalSpins}回`;
@@ -439,14 +705,12 @@
       }).join("");
     }
 
-    // URLパラメータ更新（?r=0,2,1...）
     function updateUrlParam(ids) {
       const url = new URL(window.location.href);
       url.searchParams.set("r", ids.join(","));
       window.history.replaceState({}, "", url);
     }
 
-    // URL共有ボタン
     function shareResult() {
       if (!state.lastResults || state.lastResults.length === 0) {
         showToast("先にガチャをまわしてください！");
@@ -469,7 +733,6 @@
       setTimeout(() => t.classList.remove("show"), 2200);
     }
 
-    // 保存・読み込み・リセット
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
@@ -485,7 +748,6 @@
         } catch (e) {}
       }
 
-      // URLに ?r=... がついていたら共有結果を優先表示
       const params = new URLSearchParams(window.location.search);
       const rParam = params.get("r");
       if (rParam) {
